@@ -3,16 +3,16 @@ import { Navigate, useLocation } from "react-router-dom";
 import { ROOTS_MAIN } from "../../routes/path";
 
 interface IAuthGuard {
-    children: ReactNode;
+  children: ReactNode;
 }
 
-const AuthGuard: FC<IAuthGuard>  = ({children}) => {
-    const { pathname } = useLocation();
-    if (pathname === '/') {
-        return <Navigate to={ROOTS_MAIN} />
-    }
+const AuthGuard: FC<IAuthGuard> = ({ children }) => {
+  const { pathname } = useLocation();
+  if (pathname === "/") {
+    return <Navigate to={ROOTS_MAIN} />;
+  }
 
-    return <>{children}</>
-}
+  return <>{children}</>;
+};
 
 export default AuthGuard;

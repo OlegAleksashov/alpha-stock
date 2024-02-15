@@ -1,36 +1,38 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import ReactApexChart from 'react-apexcharts'
-import { formatStockData } from '../../utils/formatStockData'
-import { fetchStockData } from '../../services/services'
-import { candleStickOptions } from '../../constant/constant'
+import React, { FC } from 'react'
+import { Grid } from "@mui/material";
 
-const LiveChart = ({ symbol }: any) => {
-  const [stockData, setStockData] = useState({})
+import {
+    useGetTimeSeriesWeeklyAdjustedQuery,
+    useGetTimeSeriesMonthlyAdjustedQuery
+} from "../../api/Charts/Charts";
+import Chart from "./Chart/Chart";
 
-  useEffect(() => {
-      fetchStockData(symbol).then(data => {
-          console.log(data)
-          setStockData(data)
-      }
-          
-      )
-  }, [symbol])
+const symbol = 'IBM'
 
-  const seriesData = useMemo(() => formatStockData(stockData), [stockData])
+const LiveCharts: FC = () => {
 
-  return (
-      <ReactApexChart
-          series={
-              [
-                  {
-                      data: seriesData
-                  }
-              ]
-          }
-          options={candleStickOptions}
-          type="candlestick"
-      />
-  )
+    const {
+        data: dataWeekly,
+        isLoading: isLoadingWeekly,
+        isError: isErrorWeekly
+    } = useGetTimeSeriesWeeklyAdjustedQuery(symbol)
+
+    const {
+        data: dataMonthly,
+        isLoading: isLoadingMonthly,
+        isError: isErrorMonthly
+    } = useGetTimeSeriesMonthlyAdjustedQuery(symbol)
+
+    return (
+        <Grid container spacing={3}>
+            <Grid item lg={6} md={12} xs={12}>
+                <Chart isLoading={isLoadingWeekly} data={dataWeekly} />
+            </Grid>
+            <Grid item lg={6} md={12} xs={12}>
+                <Chart isLoading={isLoadingMonthly} data={dataMonthly} />
+            </Grid>
+        </Grid>
+    )
 }
 
-export default LiveChart
+export default LiveCharts

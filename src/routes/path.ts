@@ -1,1 +1,1 @@
-export const ROOTS_MAIN = '/dashboard'
+export const ROOTS_MAIN = "/dashboard";
