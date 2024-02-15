@@ -14,7 +14,7 @@ interface IChart {
 const Chart: FC<IChart> = ({ isLoading, data }) => {
   const formattedData = useMemo(() => {
     if (data) {
-      return formatStockData;
+      return formatStockData(data);
     }
     return {};
   }, [data]);
